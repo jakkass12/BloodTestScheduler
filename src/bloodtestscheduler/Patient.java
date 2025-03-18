@@ -29,7 +29,7 @@ public class Patient {
         this.isFromHospitalWard = convertHospitalWardStatus(isFromHospitalWard);
         this.gpName = gpName;
         this.gpId = gpId;
-        this.testStatus = "pending";
+        this.testStatus = "Pending";
     }
     
     // setters

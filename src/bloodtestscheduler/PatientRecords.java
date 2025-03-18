@@ -15,9 +15,11 @@ public class PatientRecords {
     private ArrayList<Patient> patients;
     private int patientId = -1;  // used to track patients in patientRecords
     
+    // constructor
     public PatientRecords() {
         this.patients = new ArrayList<>();
     }
+    
     
     // adds patient to records
     public void addPatient(Patient patient) { 
@@ -32,7 +34,5 @@ public class PatientRecords {
     public void updateTestStatus(int patientId, String updatedStatus) {
         patients.get(patientId).setTestStatus(updatedStatus); 
     }
-    
-    
     
 }
