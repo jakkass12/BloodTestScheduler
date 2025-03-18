@@ -125,7 +125,7 @@ public class Patient {
     // override tostring() method
     @Override
     public String toString() {
-        return "Patient: " + patientId +"\nPatientName= " + patientName + "  priority= " + patientPriority + "  age= " + patientAge + 
+        return "Patient: " + (patientId+1) +"\nPatientName= " + patientName + "  priority= " + patientPriority + "  age= " + patientAge + 
                 "  fromHospitalWard= " + isFromHospitalWard + "  gpName= " + gpName + "  gpId= " + gpId + "  testStatus= " + testStatus;
     }
 }
