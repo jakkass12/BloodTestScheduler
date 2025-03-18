@@ -109,17 +109,5 @@ public class PatientPriorityQueue implements PQInterface {
         return patientPQ.get(0);
     }
     
-    // prints contents of the pq
-    @Override
-    public String printPQueue()
-    {
-        String printStr = new String();
-        PQElement elem;
-        for (int i = 0; i<patientPQ.size();i++)
-        {
-            elem = patientPQ.get(i);
-            printStr = printStr.concat (elem.getElement().toString()+" "+"Priority ="+elem.getKey()+"\n");
-        }
-        return printStr;
-    }
+    
 }
