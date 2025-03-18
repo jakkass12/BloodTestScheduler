@@ -12,21 +12,25 @@ package bloodtestscheduler;
 
 public class Patient {
     // attributes
+    private int patientId = -1;  // used to track patients in patientRecords
     private String patientName;
     private String patientPriority;
     private int patientAge;
     private boolean isFromHospitalWard;
     private String gpName;
     private String gpId;
+    private String testStatus;
     
     // constructor
     public Patient(String patientName, String patientPriority, int patientAge, String isFromHospitalWard, String gpName, String gpId){
+        this.patientId +=1;
         this.patientName = patientName;
         this.patientPriority = patientPriority;
         this.patientAge = patientAge;
         this.isFromHospitalWard = convertHospitalWardStatus(isFromHospitalWard);
         this.gpName = gpName;
         this.gpId = gpId;
+        this.testStatus = "pending";
     }
     
     // setters
@@ -54,6 +58,14 @@ public class Patient {
         this.gpId = gpId;
     }
     
+    public void setTestStatus(String testStatus) {
+        this.testStatus = testStatus;
+    }
+    
+    public int getPatientId(){
+        return patientId;
+    }
+    
     // getters
     public String getPatientName() { 
         return patientName;
@@ -77,6 +89,10 @@ public class Patient {
     
     public String getGpId(){
         return gpId;
+    }
+    
+    public String getTestStatus() {
+        return testStatus;
     }
     
     // calculations
@@ -106,8 +122,8 @@ public class Patient {
     // override tostring() method
     @Override
     public String toString() {
-        return "Patient{name='" + patientName + "', priority='" + patientPriority + "', age=" + patientAge + 
-                ", fromHospitalWard=" + isFromHospitalWard + ", gpName='" + gpName + "', gpId='" + gpId + "'}";
+        return "Patient{name=" + patientName + ", priority=" + patientPriority + ", age=" + patientAge + 
+                ", fromHospitalWard=" + isFromHospitalWard + ", gpName=" + gpName + ", gpId=" + gpId + ", testStatus=" + testStatus + "}";
     }
 }
 
