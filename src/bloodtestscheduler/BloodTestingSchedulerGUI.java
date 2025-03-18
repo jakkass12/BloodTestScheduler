@@ -9,12 +9,70 @@ package bloodtestscheduler;
  * @author Seamus90
  */
 public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
-
+    // attributes
+    PatientRecords patientRecords;
+    PatientPriorityQueue patientPriorityQueue;
     /**
      * Creates new form BloodTestingSchedulerGUI
      */
     public BloodTestingSchedulerGUI() {
         initComponents();
+        
+        // initialase records and pq
+        this.patientRecords = new PatientRecords();
+        this.patientPriorityQueue = new PatientPriorityQueue();
+        
+        // clear patient priority cb and fill it
+        patientPriorityCB.removeAllItems();
+        populatPatientPriorityCB();
+        
+        // clear and populate hospital ward status combo box
+        hospitalStatusCB.removeAllItems();
+        populateFromHospitalWardCB();
+    }
+    
+    // method to populate patient priority combo bod
+    public void populatPatientPriorityCB() {
+        // clear cb
+        patientPriorityCB.removeAllItems(); 
+        
+        // fill combo box with priorty types
+        patientPriorityCB.addItem("Urgent");
+        patientPriorityCB.addItem("Medium");
+        patientPriorityCB.addItem("Low");
+    }
+    
+    // method to populate is from hospital ward combo box
+    public void populateFromHospitalWardCB() {
+        hospitalStatusCB.removeAllItems();
+        hospitalStatusCB.addItem("True");
+         hospitalStatusCB.addItem("False");
+    }
+    
+    // method to display current patient with top priority
+    public void displayTopPriotiyPatient() {
+        // clear text area
+        patientProcessingTA.setText("");
+        
+        // get patient element at top of the pq
+        PQElement topPatientElement = (PQElement) patientPriorityQueue.peek();
+        
+        // get the patient object
+        Patient topPrioityPatient = topPatientElement.getElement();
+        
+        // create Stringbuilder to store patient details
+        StringBuilder priorityPatientDetails = new StringBuilder();
+        
+        // add details to stringbuilder
+        priorityPatientDetails.append("Name: " + topPrioityPatient.getPatientName() + " ///");
+        priorityPatientDetails.append(" Priority: " + topPrioityPatient.getPatientPriority() + " ///");
+        priorityPatientDetails.append(" Age: " + topPrioityPatient.getPatientAge() + " ///");
+        priorityPatientDetails.append(" From Hospital: " + topPrioityPatient.getIsFromHospitalWard() + " ///");
+        priorityPatientDetails.append(" GP Name: " + topPrioityPatient.getGpName() + " ///");
+        priorityPatientDetails.append(" GP ID: " + topPrioityPatient.getGpId() + " ///");
+        
+        // display details in text area
+        patientProcessingTA.append(priorityPatientDetails.toString());
     }
 
     /**
@@ -33,23 +91,23 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         patientNameLabel = new javax.swing.JLabel();
         patientNameField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        patientPrioritySelection = new javax.swing.JComboBox<>();
+        patientPriorityCB = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         patientAgeField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        hospitalStatusInput = new javax.swing.JComboBox<>();
+        hospitalStatusCB = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        gpNameInput = new javax.swing.JTextField();
+        gpNameField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        gpIdField = new javax.swing.JTextField();
+        registerPatientBtn = new javax.swing.JButton();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        patientProcessingTA = new javax.swing.JTextArea();
         jLabel8 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        processPatientBtn = new javax.swing.JButton();
+        markMissedBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -65,32 +123,15 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
 
         patientNameLabel.setText("Patient Name");
 
-        patientNameField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientNameFieldActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Patient Priority");
 
-        patientPrioritySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        patientPrioritySelection.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientPrioritySelectionActionPerformed(evt);
-            }
-        });
+        patientPriorityCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel4.setText("Patient Age");
 
-        patientAgeField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                patientAgeFieldActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("Fom Hospital Ward");
 
-        hospitalStatusInput.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        hospitalStatusCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setText("GP Name");
 
@@ -114,16 +155,16 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                             .addComponent(jLabel1)
                             .addComponent(jLabel3)
                             .addComponent(patientNameField)
-                            .addComponent(patientPrioritySelection, 0, 150, Short.MAX_VALUE)
+                            .addComponent(patientPriorityCB, 0, 150, Short.MAX_VALUE)
                             .addComponent(patientAgeField))
                         .addGap(93, 93, 93)
                         .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2)
-                            .addComponent(hospitalStatusInput, 0, 150, Short.MAX_VALUE)
+                            .addComponent(hospitalStatusCB, 0, 150, Short.MAX_VALUE)
                             .addComponent(jLabel5)
-                            .addComponent(gpNameInput)
+                            .addComponent(gpNameField)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField2))
+                            .addComponent(gpIdField))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(patientPriorityLabelLayout.createSequentialGroup()
                 .addGap(248, 248, 248)
@@ -145,15 +186,15 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(patientNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(hospitalStatusInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hospitalStatusCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(patientPrioritySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(gpNameInput, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(patientPriorityCB, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(gpNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -161,26 +202,36 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(patientPriorityLabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(patientAgeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(gpIdField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        jButton1.setText("Register Patient");
+        registerPatientBtn.setText("Register Patient");
+        registerPatientBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerPatientBtnActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel7.setText("Patient Processing");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        patientProcessingTA.setColumns(20);
+        patientProcessingTA.setRows(5);
+        jScrollPane1.setViewportView(patientProcessingTA);
 
         jLabel8.setText("Patient Details");
 
-        jButton2.setText("Process Patient");
-
-        jButton3.setText("Mark as Missed");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        processPatientBtn.setText("Process Patient");
+        processPatientBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                processPatientBtnActionPerformed(evt);
+            }
+        });
+
+        markMissedBtn.setText("Mark as Missed");
+        markMissedBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                markMissedBtnActionPerformed(evt);
             }
         });
 
@@ -205,7 +256,7 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                                 .addComponent(patientPriorityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1))
+                                .addComponent(registerPatientBtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(16, 16, 16)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,9 +264,9 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                                     .addComponent(jLabel7)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 630, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jButton2)
+                                        .addComponent(processPatientBtn)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jButton3))))
+                                        .addComponent(markMissedBtn))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +281,7 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(patientPriorityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(registerPatientBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -241,8 +292,8 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(processPatientBtn)
+                    .addComponent(markMissedBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -255,21 +306,69 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void patientNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientNameFieldActionPerformed
+    private void markMissedBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_markMissedBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_patientNameFieldActionPerformed
+    }//GEN-LAST:event_markMissedBtnActionPerformed
 
-    private void patientPrioritySelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientPrioritySelectionActionPerformed
+    private void registerPatientBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerPatientBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_patientPrioritySelectionActionPerformed
+        
+        // get input fields and convert to approriate data types
+        String pName = patientNameField.getText();
+        String pPriority = (String) patientPriorityCB.getSelectedItem();
+        int pAge = Integer.parseInt(patientAgeField.getText());
+        String pHospitalStatus = (String) hospitalStatusCB.getSelectedItem();
+        String gpName = gpNameField.getText();
+        String gpId = gpIdField.getText();
+        
+        // create patient 
+        Patient patient = new Patient(pName, pPriority, pAge, pHospitalStatus, gpName, gpId);
+        
+        // add to records
+        patientRecords.addPatient(patient);
+        
+        // convert patient priority level to int
+        int priorityKey = patient.priorityStringToInt();
+        patientPriorityQueue.enqueue(priorityKey, patient);
+        
+        // reset fields
+        patientNameField.setText("");
+        patientAgeField.setText("");
+        gpNameField.setText("");
+        gpIdField.setText("");
+        
+        // display top prioty patient
+        displayTopPriotiyPatient();
+    }//GEN-LAST:event_registerPatientBtnActionPerformed
 
-    private void patientAgeFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientAgeFieldActionPerformed
+    // will add patient to records and to the pq for processing
+    private void processPatientBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_processPatientBtnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_patientAgeFieldActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+        
+        // get input fields and convert to approriate data types
+        String pName = patientNameField.getText();
+        String pPriority = (String) patientPriorityCB.getSelectedItem();
+        int pAge = Integer.parseInt(patientAgeField.getText());
+        String pHospitalStatus = (String) hospitalStatusCB.getSelectedItem();
+        String gpName = gpNameField.getText();
+        String gpId = gpIdField.getText();
+        
+        // create patient 
+        Patient patient = new Patient(pName, pPriority, pAge, pHospitalStatus, gpName, gpId);
+        
+        // add to records
+        patientRecords.addPatient(patient);
+        
+        // convert patient priority level to int
+        int priorityKey = patient.priorityStringToInt();
+        patientPriorityQueue.enqueue(priorityKey, patient);
+        
+        // reset fields
+        patientNameField.setText("");
+        patientAgeField.setText("");
+        gpNameField.setText("");
+        gpIdField.setText("");
+    }//GEN-LAST:event_processPatientBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,11 +406,9 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField gpNameInput;
-    private javax.swing.JComboBox<String> hospitalStatusInput;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JTextField gpIdField;
+    private javax.swing.JTextField gpNameField;
+    private javax.swing.JComboBox<String> hospitalStatusCB;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -326,14 +423,16 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel mainHeading;
+    private javax.swing.JButton markMissedBtn;
     private javax.swing.JTextField patientAgeField;
     private javax.swing.JTextField patientNameField;
     private javax.swing.JLabel patientNameLabel;
+    private javax.swing.JComboBox<String> patientPriorityCB;
     private javax.swing.JPanel patientPriorityLabel;
-    private javax.swing.JComboBox<String> patientPrioritySelection;
+    private javax.swing.JTextArea patientProcessingTA;
+    private javax.swing.JButton processPatientBtn;
+    private javax.swing.JButton registerPatientBtn;
     // End of variables declaration//GEN-END:variables
 }

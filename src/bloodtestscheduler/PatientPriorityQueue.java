@@ -102,7 +102,7 @@ public class PatientPriorityQueue implements PQInterface {
     
     // displays the patient at top of queue without removing them
     @Override
-    public Object peak() {
+    public Object peek() {
         return patientPQ.get(0);
     }
     

@@ -12,7 +12,7 @@ package bloodtestscheduler;
 
 public class Patient {
     // attributes
-    private int patientId = -1;  // used to track patients in patientRecords
+    private int patientId;
     private String patientName;
     private String patientPriority;
     private int patientAge;
@@ -23,7 +23,6 @@ public class Patient {
     
     // constructor
     public Patient(String patientName, String patientPriority, int patientAge, String isFromHospitalWard, String gpName, String gpId){
-        this.patientId +=1;
         this.patientName = patientName;
         this.patientPriority = patientPriority;
         this.patientAge = patientAge;
@@ -34,6 +33,9 @@ public class Patient {
     }
     
     // setters
+    public void setPatientId(int pId) {
+        this.patientId = pId;
+    }
     public void setPatientName(String patientName) { 
         this.patientName = patientName;
     }
@@ -99,7 +101,7 @@ public class Patient {
     
     // method to convert string input to boolean
     private boolean convertHospitalWardStatus(String isFromHospitalWard) {
-        if (isFromHospitalWard.equals("true")) {
+        if (isFromHospitalWard.equals("True")) {
             return true;
         } else {
             return false;
@@ -108,7 +110,7 @@ public class Patient {
     
     // method to convert priority string to numeric 
     // if urgent return 1, medium return 2 and low return 3
-    public int priorityStringToInt(String patientPriority) {
+    public int priorityStringToInt() {
       if (patientPriority.equalsIgnoreCase("urgent")) {
           return 1;
       } else if (patientPriority.equalsIgnoreCase("medium")) {

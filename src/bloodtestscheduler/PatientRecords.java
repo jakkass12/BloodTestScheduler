@@ -13,6 +13,7 @@ import java.util.*;
 public class PatientRecords {
     // attributes
     private ArrayList<Patient> patients;
+    private int patientId = -1;  // used to track patients in patientRecords
     
     public PatientRecords() {
         this.patients = new ArrayList<>();
@@ -21,6 +22,10 @@ public class PatientRecords {
     // adds patient to records
     public void addPatient(Patient patient) { 
         patients.add(patient);
+        // increment id 
+        patientId += 1;
+        // add it to patient
+        patient.setPatientId(patientId);
     }
     
     // updates a patients test status
