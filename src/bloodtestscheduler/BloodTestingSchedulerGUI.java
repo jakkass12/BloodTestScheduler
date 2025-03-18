@@ -21,6 +21,10 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
     public BloodTestingSchedulerGUI() {
         initComponents();
         
+        // disables btns intially to prevent errors
+        processPatientBtn.setEnabled(false);
+        markMissedBtn.setEnabled(false);
+        
         // initialase records and pq and queue
         this.patientRecords = new PatientRecords();
         this.patientPriorityQueue = new PatientPriorityQueue();
@@ -440,6 +444,12 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         
         // display missed appointments
         displayMissedAppointments();
+        
+        // disable btns if pq is empty to prevent error
+        if (patientPriorityQueue.size() == 0) {
+                processPatientBtn.setEnabled(false);
+                markMissedBtn.setEnabled(false);
+        }
         // display success message
         JOptionPane.showMessageDialog(this, "Patient logged as missed");
     }//GEN-LAST:event_markMissedBtnActionPerformed
@@ -492,6 +502,10 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
             // show success message
             JOptionPane.showMessageDialog(this, "Patient Registered");
             
+            // allow both buttons to work
+            processPatientBtn.setEnabled(true);
+            markMissedBtn.setEnabled(true);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error occured, please try again");
         }
@@ -521,6 +535,12 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         
         // now update that patients status
         patientRecords.updateTestStatus(pIndex, "Processed");
+        
+        // disable btns if pq is empty to prevent error
+        if (patientPriorityQueue.size() == 0) {
+                processPatientBtn.setEnabled(false);
+                markMissedBtn.setEnabled(false);
+        }
         
         // display new priority
         displayTopPriotiyPatient();

@@ -47,12 +47,12 @@ public class PatientRecords {
     public String getPatientByTestStatus(String testStatus) {
         StringBuilder patientsString = new StringBuilder();  // used to store patients for output
         // b
-        return BuildPatientByTestStatusString(0, testStatus, patientsString);
+        return buildPatientByTestStatusString(0, testStatus, patientsString);
         
     }
     
     // recursive method to build a string of all patients of certain test status
-    public String BuildPatientByTestStatusString(int index, String testStatus, StringBuilder patientsString) {
+    public String buildPatientByTestStatusString(int index, String testStatus, StringBuilder patientsString) {
         // breaks recursion when it goes out of bounds
         if (index >= patients.size()){
             return patientsString.toString();
@@ -65,7 +65,7 @@ public class PatientRecords {
         }
         
         // move to next patient and repeat
-        return BuildPatientByTestStatusString(index + 1, testStatus, patientsString);
+        return buildPatientByTestStatusString(index + 1, testStatus, patientsString);
     }
 }
 
