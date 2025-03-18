@@ -4,6 +4,8 @@
  */
 package bloodtestscheduler;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Seamus90
@@ -72,7 +74,7 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
             // add details to stringbuilder
             priorityPatientDetails.append("Name: " + topPrioityPatient.getPatientName() + "\n");
             priorityPatientDetails.append("Priority: " + topPrioityPatient.getPatientPriority() + "\n");
-            priorityPatientDetails.append("Age: " + topPrioityPatient.getPatientAge() + " ///");
+            priorityPatientDetails.append("Age: " + topPrioityPatient.getPatientAge() + " \n");
             priorityPatientDetails.append("From Hospital: " + topPrioityPatient.getIsFromHospitalWard() + "\n");
             priorityPatientDetails.append("GP Name: " + topPrioityPatient.getGpName() + "\n");
             priorityPatientDetails.append("GP ID: " + topPrioityPatient.getGpId() + "\n");
@@ -90,17 +92,22 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         missedPatientsTA.setText("");
         // call method to store last 5 patients in a stringbuilder
         missedPatientsTA.append(missedApptQueue.getQueContents());
+        // start from top
+        missedPatientsTA.setCaretPosition(0);
     }
     
     // method to display patients in the patients record text area, pass in a string of patients detilas
     public void displayPatients(String patientsStr) {
+        patientsRecordTA.setText("");
         patientsRecordTA.append(patientsStr);
     }
     
-public void testPrint() {
-    String stuff = patientRecords.getAllPatients();
-    patientsRecordTA.setText("");
-    patientsRecordTA.append(stuff);
+
+    public void displayAllPatients() {
+        String patientsStr = patientRecords.getAllPatients();
+        patientsRecordTA.setText("");
+        patientsRecordTA.append(patientsStr);
+    
 }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -318,48 +325,52 @@ public void testPrint() {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(processPatientBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(markMissedBtn))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 199, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel9)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(69, 69, 69))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSeparator3)
+                    .addComponent(jSeparator3))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(patientPriorityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(registerPatientBtn))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(processPatientBtn)
+                                .addComponent(displayPendingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(markMissedBtn))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(63, 63, 63))
+                                .addComponent(displayProcessedBtn)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(displayMissedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(displayAllPatientsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(343, 343, 343)
+                                .addComponent(jLabel10))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 814, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(patientPriorityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(registerPatientBtn))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10))
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(displayProcessedBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(displayMissedBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(displayPendingBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(displayAllPatientsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(24, 24, 24)
-                                        .addComponent(jLabel11)))))
-                        .addGap(0, 35, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addGap(267, 267, 267)
+                        .addComponent(jLabel11)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -387,22 +398,19 @@ public void testPrint() {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(displayPendingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(displayProcessedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(displayMissedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(displayAllPatientsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jLabel10)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(displayPendingBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(displayProcessedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(displayMissedBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(displayAllPatientsBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -439,31 +447,53 @@ public void testPrint() {
         // TODO add your handling code here:
         
         // get input fields and convert to approriate data types
-        String pName = patientNameField.getText();
-        String pPriority = (String) patientPriorityCB.getSelectedItem();
-        int pAge = Integer.parseInt(patientAgeField.getText());
-        String pHospitalStatus = (String) hospitalStatusCB.getSelectedItem();
-        String gpName = gpNameField.getText();
-        String gpId = gpIdField.getText();
+        try {
+            // get intputs
+            String pName = patientNameField.getText();
+            String pPriority = (String) patientPriorityCB.getSelectedItem();
+            String ageString = patientAgeField.getText();
+            String pHospitalStatus = (String) hospitalStatusCB.getSelectedItem();
+            String gpName = gpNameField.getText();
+            String gpId = gpIdField.getText();
+         
+            // make sure patient fields arent empty
+            if (pName.isEmpty() || pPriority.isEmpty() || ageString.isEmpty() || gpName.isEmpty() || gpId.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "All fields must be filled");
+                return;
+            }
+            
+            // validate age
+            int pAge;
+            try {
+                pAge = Integer.parseInt(patientAgeField.getText());
+            } catch(NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Age must be a number");
+                return;
+            }
+            
+
         
-        // create patient 
-        Patient patient = new Patient(pName, pPriority, pAge, pHospitalStatus, gpName, gpId);
+            // create patient 
+            Patient patient = new Patient(pName, pPriority, pAge, pHospitalStatus, gpName, gpId);
         
-        // add to records
-        patientRecords.addPatient(patient);
+            // add to records
+            patientRecords.addPatient(patient);
         
-        // convert patient priority level to int
-        int priorityKey = patient.priorityStringToInt();
-        patientPriorityQueue.enqueue(priorityKey, patient);
+            // convert patient priority level to int
+            int priorityKey = patient.priorityStringToInt();
+            patientPriorityQueue.enqueue(priorityKey, patient);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error occured, please try again");
+        }
         
         // reset fields
-        patientNameField.setText("");
-        patientAgeField.setText("");
-        gpNameField.setText("");
-        gpIdField.setText("");
+            patientNameField.setText("");
+            patientAgeField.setText("");
+            gpNameField.setText("");
+            gpIdField.setText("");
         
-        // display top prioty patient
-        displayTopPriotiyPatient();
+            // display top prioty patient
+            displayTopPriotiyPatient();
     }//GEN-LAST:event_registerPatientBtnActionPerformed
 
     // will add patient to records and to the pq for processing
@@ -517,7 +547,7 @@ public void testPrint() {
     // display all patients
     private void displayAllPatientsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayAllPatientsBtnActionPerformed
         // TODO add your handling code here:
-        testPrint();
+        displayAllPatients();
     }//GEN-LAST:event_displayAllPatientsBtnActionPerformed
 
     /**
