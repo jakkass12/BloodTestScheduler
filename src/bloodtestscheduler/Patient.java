@@ -48,6 +48,7 @@ public class Patient {
         this.patientAge = patientAge;
     }
     
+    // calls method that sets string to bool
     public void setIsFromHospitalWard(String isFromHospitalWard) {
         this.isFromHospitalWard = convertHospitalWardStatus(isFromHospitalWard);
     }

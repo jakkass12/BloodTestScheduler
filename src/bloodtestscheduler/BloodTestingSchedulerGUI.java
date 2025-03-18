@@ -440,6 +440,8 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         
         // display missed appointments
         displayMissedAppointments();
+        // display success message
+        JOptionPane.showMessageDialog(this, "Patient logged as missed");
     }//GEN-LAST:event_markMissedBtnActionPerformed
 
     // when button clicked adds patients to registartion and displays priority
@@ -462,7 +464,7 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 return;
             }
             
-            // validate age
+            // make sure age is an int
             int pAge;
             try {
                 pAge = Integer.parseInt(patientAgeField.getText());
@@ -471,8 +473,12 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
                 return;
             }
             
-
-        
+            // make sure age is greater than or equal to zero
+            if(pAge < 0) {
+                JOptionPane.showMessageDialog(this, "Age must be 0 or greater");
+                return;
+            }
+            
             // create patient 
             Patient patient = new Patient(pName, pPriority, pAge, pHospitalStatus, gpName, gpId);
         
@@ -482,6 +488,10 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
             // convert patient priority level to int
             int priorityKey = patient.priorityStringToInt();
             patientPriorityQueue.enqueue(priorityKey, patient);
+            
+            // show success message
+            JOptionPane.showMessageDialog(this, "Patient Registered");
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error occured, please try again");
         }
@@ -514,6 +524,7 @@ public class BloodTestingSchedulerGUI extends javax.swing.JFrame {
         
         // display new priority
         displayTopPriotiyPatient();
+        JOptionPane.showMessageDialog(this, "Patient Processed");
        
     }//GEN-LAST:event_processPatientBtnActionPerformed
 

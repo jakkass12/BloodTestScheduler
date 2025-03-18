@@ -13,7 +13,7 @@ import java.util.*;
 public class PatientRecords {
     // attributes
     private ArrayList<Patient> patients;
-    private int patientId = -1;  // used to track patients in patientRecords
+    private int patientId;  // used to track patients in patientRecords
     
     // constructor
     public PatientRecords() {
@@ -25,11 +25,11 @@ public class PatientRecords {
     public void addPatient(Patient patient) { 
         patientId = patients.size();  // set id to size of list, since id will always match size
         patients.add(patient);
-        // set patient id
+        // sets patient id
         patient.setPatientId(patientId);
     } 
     
-    // updates a patients test status
+    // updates a patients test status by their id
     public void updateTestStatus(int patientId, String updatedStatus) {
         patients.get(patientId).setTestStatus(updatedStatus); 
     }
@@ -57,9 +57,9 @@ public class PatientRecords {
         if (index >= patients.size()){
             return patientsString.toString();
         }
-        // get current patient
+        // get current patient at index
         Patient patient = patients.get(index);
-        // check if current patient has matching test case
+        // check if current patient has matching test case and append if it does
         if (patient.getTestStatus().equalsIgnoreCase(testStatus)) {
             patientsString.append(patient.toString() + "\n");
         }
@@ -68,5 +68,4 @@ public class PatientRecords {
         return BuildPatientByTestStatusString(index + 1, testStatus, patientsString);
     }
 }
-
 

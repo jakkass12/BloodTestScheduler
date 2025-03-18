@@ -9,6 +9,9 @@ import java.util.ArrayList;
 /**
  *
  * @author Seamus90
+ * class stores a priority queue of all the patients to be processed
+ * will insert the key/patient element in correct position in queue based on priority
+ * will remove top patient in queue when instructed
  */
 public class PatientPriorityQueue implements PQInterface {
     // attributes
